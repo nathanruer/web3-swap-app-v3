@@ -3,12 +3,15 @@
 import { useState, useMemo } from "react";
 import { Suspense } from "react";
 
-import { useProvider, useAccount } from 'wagmi';
+import { useProvider } from 'wagmi';
 import { useNetwork } from 'wagmi'
 
 import SelectTokenInModal from "./modals/SelectTokenInModal";
 import SelectTokenOutModal from "./modals/SelectTokenOutModal";
-import FetchedAmountOut from "./FetchedAmountOut";
+import AmountOut from "./AmountOut";
+import Loading from "./Loading";
+import SwitchNetwork from "./SwitchNetwork";
+import TokenSelect from "./TokenSelect";
 
 interface SwapProps {
   chain?: string | null;
@@ -36,9 +39,9 @@ const Swap: React.FC<SwapProps> = ({
   const fetchedAmountOut = useMemo(() => {
     if (amountIn && tokenInAddress && tokenOutAddress)  {
       return (
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<Loading width="w-[200px]" height="h-[32px]"/>}>
           {/* @ts-expect-error Async Server Component */}
-          <FetchedAmountOut 
+          <AmountOut 
             tokenInAddress={tokenInAddress} 
             tokenOutAddress={tokenOutAddress}
             amountIn={amountIn}
@@ -49,42 +52,51 @@ const Swap: React.FC<SwapProps> = ({
       )
     } else {
       return (
-        null
+        <p className="text-gray-400">0.0</p>
       )
     }
   }, [amountIn, tokenInAddress, tokenOutAddress, provider, connectedChain?.id]);  
 
   return (
     <>
-      <div className="w-2/3 mx-auto">
-        <p>Chain : {chain}</p>
+      <div className="p-10">
+        <div className="w-full md:w-4/5 lg:w-3/5 xl:w-1/2 mx-auto rounded-3xl 
+        bg-neutral-700/10 shadow-2xl shadow-[#141619] p-10">
+          <SwitchNetwork 
+            chain={chain}
+          />
 
-        <div className="flex justify-between">
-          <p>Token in address : {tokenInAddress}</p>
-          <button className="flex text-white text-base
-          transition rounded-xl bg-[#222429] hover:bg-[#2e3138]"
-          onClick={() => setIsSelectTokenInModalOpen(true)}>
-            Select token in
-          </button>
-        </div>
+          <div className="p-3 w-full flex justify-between">
+            <input
+              type="number"
+              placeholder="0.0"
+              value={amountIn}
+              onChange={handleInputInChange}
+              className="w-3/5"
+            />
+            <TokenSelect 
+              tokenAddress={tokenInAddress}
+              onOpen={() => setIsSelectTokenInModalOpen(true)}
+              chain={chain}
+            />
+          </div>
 
-        <div className="flex justify-between">
-          <p>Token out address : {tokenOutAddress}</p>
-          <button className="flex text-white text-base
-          transition rounded-xl bg-[#222429] hover:bg-[#2e3138]"
-          onClick={() => setIsSelectTokenOutModalOpen(true)}>
-            Select token out
-          </button>
-        </div>
+          <div className="p-3 flex justify-between">
+            <div className="w-3/5">
+              {fetchedAmountOut}
+            </div>
+            <TokenSelect 
+              tokenAddress={tokenOutAddress}
+              onOpen={() => setIsSelectTokenOutModalOpen(true)}
+              chain={chain}
+            />
+          </div>
 
-        <input
-          type="number"
-          placeholder={"Enter value token in"}
-          value={amountIn}
-          onChange={handleInputInChange}
-        />
-        <div>
-          {fetchedAmountOut}
+          <button className="flex justify-center w-full mt-4 py-2.5 bg-gradient-to-r
+          from-violet-500 via-violet-600 to-violet-700 hover:bg-gradient-to-br 
+          rounded-xl hover:opacity-80 transition">
+            Swap
+        </button>
         </div>
       </div>
 

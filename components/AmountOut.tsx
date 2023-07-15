@@ -1,7 +1,7 @@
 import { Provider } from "@wagmi/core";
 import { getAmountOut1Inch } from "@/hooks/getAmountOut1Inch";
 
-interface FetchedAmountOutProps {
+interface AmountOutProps {
   tokenInAddress?: string;
   tokenOutAddress?: string;
   amountIn: string;
@@ -9,7 +9,7 @@ interface FetchedAmountOutProps {
   chainId?: number | undefined,
 }
 
-const FetchedAmountOut = async ({ tokenInAddress, tokenOutAddress, amountIn, provider, chainId }: FetchedAmountOutProps) => {
+const AmountOut = async ({ tokenInAddress, tokenOutAddress, amountIn, provider, chainId }: AmountOutProps) => {
   let amountOut = "";
 
   if (tokenInAddress && tokenOutAddress && chainId) {
@@ -23,4 +23,4 @@ const FetchedAmountOut = async ({ tokenInAddress, tokenOutAddress, amountIn, pro
   );
 };
 
-export default FetchedAmountOut;
+export default AmountOut;
