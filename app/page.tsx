@@ -1,6 +1,5 @@
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import Swap from "./components/Swap";
+import Navbar from "@/components/Navbar";
+import Swap from "@/components/Swap";
 
 export const metadata = {
   title: 'Swap App',
@@ -26,7 +25,6 @@ const Home = async ({ searchParams }: HomeProps) => {
         tokenInAddress={searchParams.from}
         tokenOutAddress={searchParams.to}
       />
-      <Footer />
     </>
   )
 }
