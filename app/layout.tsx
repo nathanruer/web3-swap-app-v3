@@ -35,8 +35,8 @@ const { chains, provider } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: 'Web3Modal Connect Wallet',
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  chains
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || '',
+  chains,
 });
 
 const wagmiClient = createClient({
