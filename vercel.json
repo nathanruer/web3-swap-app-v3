@@ -1,5 +1,0 @@
-{
-  "redirects": [
-    { "source": "/(.*)", "destination": "/?chain=ethereum", "statusCode": 301 }
-  ]
-}
