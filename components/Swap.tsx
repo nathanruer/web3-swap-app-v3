@@ -52,7 +52,7 @@ const Swap: React.FC<SwapProps> = ({
         null
       )
     }
-  }, [amountIn, tokenInAddress, tokenOutAddress, provider]);  
+  }, [amountIn, tokenInAddress, tokenOutAddress, provider, connectedChain?.id]);  
 
   return (
     <>
